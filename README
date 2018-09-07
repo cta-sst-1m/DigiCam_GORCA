@@ -1,0 +1,54 @@
+
+See http://otte.gatech.edu/care/tutorial/ to install, how to run and a tutorial
+
+How to fetch (from the tutorial) and how to compile (NB: for every file,
+we start always from the main installation path):
+
+ corsikIOreader:
+  dowlnload 'corsikaSimulationTools' from https://wiki-zeuthen.desy.de/CTA/CorsikaIOreader
+   > tar -xzf corsikaSimulationTools_v0142.tar.gz
+   > cd corsikaSimulationTools
+   > make
+
+ GrOptics:
+   > git clone http://www.gtlib.gatech.edu/pub/IACT/GrOptics.git
+   > cd GrOptics
+   > make
+  if not compiling
+   > cp ../MakefileGrOptics_alternative Makefile
+   > make
+  (Make_Photon folder must be compiled with 'make' separetely)
+  finally:
+   > ln -s <main installation path>/corsikaSimulationTools/data data
+
+ CARE
+  in your '.bashrc' (or '.bash_profile' or '.profile'):
+   export PATHTOVBFLIBDIRECTORY=<main installation path>/CARE/VBF-0.3.4/lib
+   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PATHTOVBFLIBDIRECTORY/lib
+   export PATH=$PATHTOVBFLIBDIRECTORY/bin:$PATH
+  then, starting again from <main installation path> path:
+   > source ~/.bashrc [or .bash_profile or .profile]
+   > git clone http://www.gtlib.gatech.edu/pub/IACT/CARE.git
+   > cd CARE
+   > tar -xzvf  VBF-0.3.4.tar.gz
+   > cd VBF-0.3.4
+   > ./configure --prefix=$PATHTOVBFLIBDIRECTORY
+   > make; make install
+   > cd ../
+   > make
+  if not compiling
+   > cp ../MakefileCARE_alternative Makefile
+   > make
+
+Configuring the local configuration files in Run folder:
+   > python setup.py
+...and follow the instruction.
+
+Other contents of the pachage:
+ groptics_cfg: folder with GrOptigs customized configs
+ care_cfg: folder with CARE customized configs
+ groptics_SST1M_geo: SST-1M custom version of GrOptics
+ CARE_SST1M: SST-1M custom version of CARE
+ Run: scripts to run the applications and submit jobs into PBS bash systems
+ macros: folder with scripts and macros, as utilities and/or analysis package
+ UsersGuideGrOptics.pdf: guide for GrOptics. CARE doesn't have a documentation, but the configs are well commented...

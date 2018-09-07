@@ -1,0 +1,33 @@
+#How many telescopes need to trigger for an array trigger.
+#A multiplicity of 1 is equivalent to having no array trigger.
+* TELMULTIPLICITY 1
+
+#Require next neighbour telescope trigger; yes = 1, no = 0
+* TELNEXTNEIGHBOR 0
+
+#Coincidence window between telescopes in ns
+* ARRAYCOINCIDENCE 50
+
+#----------------------------------------------------------------------------------------
+# The Array configuration
+#   Parameters for each telescope (TLCFG) the parameters are:
+#   -the telescope identification number in the CARE simulations 
+#   -the telescopes ID in the hyperarray (for CTA) is the same as tel id if all telescopes are used
+#   -the telescope type
+#   -the sigma of the electronic noise in units of the single pe amplitude for a relative telescope gain of one.
+#    A sigma of 0 means no electronic noise #AP: 10% of electronic noise
+#   -the relative gain of the telescope #AP: for now everything they are equivalent...
+#   -the Winston Cone efficiency can be modified to adjust 
+#    the total optical throughput of that specific telescope
+#    #AP estimated with './winston_cone_average.py cta_funnels.dat -l funnels_borofilter540nm.dat'
+#   -the sigma by which the optical psf is blured [mm]
+#    Add additional bluring of optical PSF. The position of the photon will be reevaluated by adding
+#    a random shift  x = x + 1/sqrt(2 pi sigma^2)e(-x_rand^2/(2sigma^2) and the same in y
+#    the sigma of the Gaussians in mm by which the optical PSF should be blured in addition
+#    if the sigma is <=0 no blurring is used
+#    #AP: Unknown addictional blurring. IT MUST STILL BE STUDIED!
+
+* TLCFG   0   1 0 0.08 1 0.88 0.0
+
+#The telescope neighbors that are used if TELNEXTNEIGHBOR is 1
+* TLNEIGHBRS   0   0 

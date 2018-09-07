@@ -1,0 +1,58 @@
+Array Configuration File for GrOptics
+
+VERSION 0.1 
+23Mar2015
+
+Orignal from C. Duke
+Grinnell College
+
+Version of A. Porcelli
+Geneva U.
+
+Specifies telescope locations, types, standard configuration files
+Edit records usually in this file
+
+specify telescope factories to use
+  - Factory type DC or SC  
+  - Photon reader Type GRISU or CORSIKA (only GRISU implemented)
+  - configuration file for this factory 
+  - telescope edit file for this factory (can be this file)
+ TELFAC DC GRISU  @cfg@  @cfgarray@
+ TELFAC DC GRISU  ../groptics_cfg/SST-1M_single.cfg  ../groptics_cfg/SST-1M_single.array
+ TELFAC SC GRISU ./Config/stdSCTelescopes.cfg ./Config/arrayConfig.cfg
+
+
+
+ TELFAC SEGSC GRISU ./Config/stdSegSCTelescopes.cfg ./Config/arrayConfig.cfg
+ TELFAC SC GRISU ./Config/stdSCTelescopes.cfg ./Config/arrayConfig.cfg
+
+array telescopes with telescope edits 
+@arraytels@
+
+the following edit records can be in this pilot file or a separate
+file. (See DCTelescopeFactory constructor).
+The edit records apply to specific telescopes, not to standard telescopes.
+The telescope factories create the telescopes and then look for edit records
+specific to that telescope. These apply to DC telescopes only.
+
+use matlab notation for multiple entries, e.g.
+   [1:3] = [1 2 3];  [1:3 5] = [1 2 3 5] 
+
+   NOTE: TELESCOPE NUMBERING AND FACET COUNTING STARTS AT 1, NOT 0
+   DC telescope editing only, other telescope types added later
+ EDITDCTEL <tel.number(s)> FACET  <facet_num(s)> align <max. mis_align(degrees)> 
+ EDITDCTEL [1 3] FACET [1:6] align 0.03
+
+ There are three options for changing the blur radius, degradation factor, and the reflCurveID
+ change all three parameters
+ EDITDCTEL <tel.number(s)> FACET <facet_num(s)> reflect <blur_rad> <degrad_factor> <refl_curve> 
+
+ change only blur radius and degradation factor
+ EDITDCTEL <tel.number(s)> FACET <facet_num(s)> reflect <blur_rad> <degrad_factor> 
+ 
+ change only blur radius
+ EDITDCTEL <tel.number(s)> FACET <facet_num(s)> reflect <blur_rad>  
+ 
+ EDITDCTEL [1:3] FACET [1:6] reflect  0.2 0.95 1 
+
+ EDITSCTEL records for SC telescopes to be added later.
