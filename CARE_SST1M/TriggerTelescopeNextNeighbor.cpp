@@ -185,7 +185,7 @@ void  TriggerTelescopeNextNeighbor::LoadEvent(TelescopeData *TelData)
  telData->fTimeOverThreshold.assign(iNumSumPixGroups,0);
 
  //The start sample for the delayed trace;
- Int_t iStartSample = (int)(fDiscDelay/fSamplingTime)+1;
+ Int_t iStartSample = bDiscCFDUsage ? (int)(fDiscDelay/fSamplingTime)+1 : 0;
 
  if(bDebug)
      {
@@ -818,9 +818,15 @@ void TriggerTelescopeNextNeighbor::SetDiscriminatorDelayAndAttenuation(Float_t d
 
 
 //Reads in  the config file and sets all variables
-void   TriggerTelescopeNextNeighbor::SetParametersFromConfigFile(ReadConfig *readConfig ){
+void   TriggerTelescopeNextNeighbor::SetParametersFromConfigFile(ReadConfig *readConfig, bool print_info ){
 
    cout <<endl<< "TriggerTelescopeNextNeighbor::SetParametersFromConfigFile " << endl;
+
+   //Set configuration commond to any trigger logic
+   SetCommonSettings(readConfig);
+  
+   //Set specific configuration for the trigger logic: new trigger logic (= child of this class) might require it's own SetTriggerSettings
+   SetTriggerLogicSettings(readConfig);
 
    //Trace length in ns
    fTraceLength = readConfig->GetTraceLength(iTelType);
