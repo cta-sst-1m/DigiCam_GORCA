@@ -54,20 +54,20 @@ TESTOBJECTS = $(OBJ)/GUtilityFuncts.o $(OBJ)/GDefinition.o
 # set target
 testUtilities: $(OBJ)/testUtilities.o  $(TESTOBJECTS)
 	@echo "building testUtilities"
-	$(LD) $(LDFLAGS) -pg $(LIBS) $^ $(OutPutOpt) $@
+	$(LD) $^ $(LDFLAGS) -pg $(LIBS)  $(OutPutOpt) $@
 
 
 grOptics: $(OBJ)/grOptics.o $(OBJECTS)
 	@echo "building grOptics"
-	$(LD) $(LDFLAGS) $(LIBS) $^ $(OutPutOpt) $@
+	$(LD) $^ $(LDFLAGS) $(LIBS) $(OutPutOpt)  $@
 
 grReaderFactory: $(OBJ)/grReaderFactory.o $(OBJECTS)
 	@echo "building grTestSegReaderFactory"
-	$(LD) $(LDFLAGS) $(LIBS) $^ $(OutPutOpt) $@
+	$(LD) $^ $(LDFLAGS) $(LIBS) $(OutPutOpt) $@
 
 %:$(OBJ)/%.o 
 	@echo "Building $@ ... "
-	$(LD) $(LDFLAGS) $^ $(LIBS) $(OutPutOpt) $@
+	$(LD) $^ $(LDFLAGS) $(LIBS) $(OutPutOpt) $@
 	@echo "Done"
 	@echo ""
 
@@ -80,16 +80,13 @@ $(OBJ)/%.o : %.cpp
 # to create root dictionary using rootcint
 src/GRootDCNavigatorDict.cpp: GRootDCNavigator.h GRootDCNavigatorLinkDef.h
 	@echo "Generating dictionary $< ... "
-	rootcint -v -f $@ -c  $^
-	mv src/GRootDCNavigatorDict.h include/.
+	rootcint -f $@ -c $(CXXFLAGS) -p $^
 	@echo "Done"
 
 src/GRootWriterDict.cpp: GRootWriter.h GRootWriterLinkDef.h
 	@echo "Generating dictionary $< ... "
-	rootcint -v -f $@ -c  $^
-	mv src/GRootWriterDict.h include/.
+	rootcint -f $@ -c $(CXXFLAGS) -p $^
 	@echo "Done"
-
 
 
 robast: $(ROOTMAP)
@@ -99,7 +96,8 @@ $(ROBAST_TGZ):
 	curl -L $(ROBAST_URL) > $(ROBAST_TGZ)
 
 $(ROBAST_VER): $(ROBAST_TGZ)
-	tar zxvf $(ROBAST_TGZ)
+	tar -zxvf $(ROBAST_TGZ)
+	mv ROBAST-$(ROBAST_VER) $(ROBAST_VER)
 
 $(ROOTMAP): $(ROBAST_VER)
 	cd $(ROBAST_VER);\
@@ -130,12 +128,12 @@ cleanRobast:
 
 clean: cleanGrOptics cleanRobast
 
-DEPEND=echo > Makefile.depend0 ;\
-	makedepend -s "\#DEPEND LIST DONT DELETE" -- $(INCLUDEFLAGS) \
+DEPEND= echo > Makefile.depend0 ;\
+		makedepend -s "\#DEPEND LIST DONT DELETE" -- $(INCLUDEFLAGS) \
 		-Y --  src/*.cpp  include/*.h  \
 		-f Makefile.depend0 > /dev/null 2>&1 &&\
-	sed "s/^[a-zA-Z0-9]*\//obj\//" Makefile.depend0 > Makefile.depend ;\
-	rm -f Makefile.depend0
+		sed "s/^[a-zA-Z0-9]*\//obj\//" Makefile.depend0 > Makefile.depend ;\
+		rm -f Makefile.depend0
 
 depend:
 	$(DEPEND)
