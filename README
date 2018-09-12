@@ -35,6 +35,7 @@ we start always from the main installation path):
    > ./configure --prefix=$PATHTOVBFLIBDIRECTORY
    > make; make install
    > cd ../
+   >could be necessary to create ln -s VBFDIR/VBF VBF	
    > make
   if not compiling
    > cp ../MakefileCARE_alternative Makefile

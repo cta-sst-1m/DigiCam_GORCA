@@ -31,10 +31,10 @@ OutPutOpt     = -o
 
 
 # get vbf details
-CPPFLAGS   := $(shell vbfConfig --cppflags)
-CXXFLAGS   := $(shell vbfConfig --cxxflags)
-CLLFLAGS   := $(shell vbfConfig --ldflags)
-VBFLIBS    := $(shell vbfConfig --libs)
+CPPFLAGS   := -L /home/abarbano/cta-sst-1m/DigiCam_GORCA/CARE_SST1M/VBF-0.3.4/lib/lib  $(shell /home/abarbano/cta-sst-1m/DigiCam_GORCA/CARE_SST1M/VBF-0.3.4/lib/bin/vbfConfig --cppflags)
+CXXFLAGS   := -L /home/abarbano/cta-sst-1m/DigiCam_GORCA/CARE_SST1M/VBF-0.3.4/lib/lib  $(shell /home/abarbano/cta-sst-1m/DigiCam_GORCA/CARE_SST1M/VBF-0.3.4/lib/bin/vbfConfig --cxxflags)
+CLLFLAGS   := -L /home/abarbano/cta-sst-1m/DigiCam_GORCA/CARE_SST1M/VBF-0.3.4/lib/lib  $(shell /home/abarbano/cta-sst-1m/DigiCam_GORCA/CARE_SST1M/VBF-0.3.4/lib/bin/vbfConfig --ldflags)
+VBFLIBS    := -L /home/abarbano/cta-sst-1m/DigiCam_GORCA/CARE_SST1M/VBF-0.3.4/lib/lib  $(shell /home/abarbano/cta-sst-1m/DigiCam_GORCA/CARE_SST1M/VBF-0.3.4/lib/bin/vbfConfig --libs)
 
 # Root
 
@@ -63,7 +63,7 @@ ALLFLAGS = $(CXXFLAGS) $(CPPFLAGS) -Wall
 	@echo "Done"
 
 CameraAndReadout: GOrderedGrid.o  GOrderedGridSearch.o VG_writeVBF.o VATime.o CameraAndReadout.o TelescopeData.o TraceGenerator.o TriggerTelescopeNextNeighbor.o  TriggerTelescopeCameraSnapshot.o ArrayTrigger.o ReadConfig.o FADC.o Display.o
-	        $(LD)  $(CLLFLAGS) $(LIBS)  $(LDFLAGS) $^ $(OutPutOpt) $@ -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS
+	        $(LD) $(CLLFLAGS) $(LIBS)  $(LDFLAGS) $^ $(OutPutOpt) $@ -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS
 	        @echo "$@ done"
 
 VATime.o: VATime.cpp
@@ -81,11 +81,11 @@ depend:
 Makefile.depend:
 	$(DEPEND)
 
-DEPEND=echo > Makefile.depend0 &&\
+DEPEND=echo > Makefile.depend0 ;\
 	makedepend -s "\#DEPEND LIST DONT DELETE" -- $(INCLUDEFLAGS) \
 		-Y --  *.cpp *.c \
-		-f Makefile.depend0 > /dev/null 2>&1 &&\
-	sed "s/^[a-zA-Z0-9]*\///" Makefile.depend0 > Makefile.depend &&\
+		-f Makefile.depend0 > /dev/null 2>&1 ;\
+	sed "s/^[a-zA-Z0-9]*\///" Makefile.depend0 > Makefile.depend ;\
 	rm -f Makefile.depend0
 
 include Makefile.depend
